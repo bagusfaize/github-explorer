@@ -1,5 +1,6 @@
 "use client"
 
+import ProfileCard from "./components/profile-card";
 import { useUsers } from "./hooks/use-users"
 
 export default function Home() {
@@ -11,21 +12,24 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="flex flex-col items-center justify-center">
-        <div>
-          <h1 className="text-3xl">GitHub Explorer</h1>
+    <main className="min-h-screen mx-10">
+      <div className="flex flex-col items-center justify-center">
+        <div className="my-5">
+          <h1 className="text-3xl text-center">GitHub Explorer</h1>
           <input type="text" className="border border-sky-800 px-3 py-1" />
           <button className="bg-sky-800	text-white px-3 py-1 mx-3">Search</button>
         </div>
-        <div className="flex">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 w-full md:w-auto">
           {data.map(user => (
-            <div className="bg-white p-5 m-3" key={user.login}>
-              {user.login}
-            </div>
+            <ProfileCard
+              key={user.id}
+              id={user.id}
+              login={user.login}
+              avatar_url={user.avatar_url}
+            />
           ))}
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   )
 }
