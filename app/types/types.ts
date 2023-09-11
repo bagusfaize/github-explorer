@@ -15,4 +15,12 @@ export type InputSearchProps = {
     searchQuery: string,
     onInputChange: (query: string) => void, 
     onSearch: () => void
+}
+
+export type RepoCardProps = {
+    id?: number,
+    name: string,
+    description: string,
+    stargazers_count: number,
+    html_url: string,
   }
