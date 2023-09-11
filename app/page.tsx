@@ -1,13 +1,17 @@
 "use client"
 
+import Accordion from "./components/accordion";
 import InputSearch from "./components/input-search";
-import ProfileCard from "./components/profile-card";
-import { useSearchUsers } from "./hooks/use-users"
+import { useSearchUsers, useUserRepo } from "./hooks/use-users";
+import { useAccordion } from "./hooks/use-accordion";
+import RepoCard from "./components/repo-card";
 
 export default function Home() {
+  const { expanded, setExpanded } = useAccordion();
+  const { repos, setSelectedUser } = useUserRepo();
   const {
+    data,
     refetch,
-    data = [],
     searchQuery,
     setSearchQuery
   } = useSearchUsers({
@@ -17,6 +21,11 @@ export default function Home() {
 
   const handleSearch = () => {
     refetch()
+  }
+
+  const handleOpenAccordion = (value: number | boolean, username: string) => {
+    setExpanded(value)
+    setSelectedUser(username)
   }
 
   return (
@@ -30,14 +39,29 @@ export default function Home() {
             onSearch={handleSearch}
           />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full md:w-4/5">
-          {data.map(user => (
-            <ProfileCard
+        <div className="grid grid-cols-1 gap-5 w-full md:w-2/3">
+          {data.map((user, i) => (
+            <Accordion
+              i={i}
               key={user.id}
-              id={user.id}
-              login={user.login}
-              avatar_url={user.avatar_url}
-            />
+              user={user}
+              isOpen={i === expanded}
+              setExpanded={(value) => handleOpenAccordion(value, user.login)}
+            >
+              <div className="grid grid-cols-6 pt-4 gap-4">
+                  {repos.map(repo => {
+                    return(
+                      <RepoCard
+                        key={repo.id}
+                        name={repo.name}
+                        description={repo.description}
+                        stargazers_count={repo.stargazers_count}
+                        html_url={repo.html_url}
+                      />
+                    )
+                  })}
+              </div>
+            </Accordion>
           ))}
         </div>
       </div>
