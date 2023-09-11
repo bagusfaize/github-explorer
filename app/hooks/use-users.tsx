@@ -1,6 +1,7 @@
+"use client"
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query"
-import { searchUsers } from "../services/github-service"
+import { getUserDetails, searchUsers } from "../services/github-service"
 import { GithubUserProps, QueryParamsProps } from "../types/types";
 
 export const useSearchUsers = ({
@@ -18,4 +19,17 @@ export const useSearchUsers = ({
         setSearchQuery,
         refetch
     }
+}
+
+export const useUserDetails = ({
+    q
+}: QueryParamsProps ) => {
+
+    const { data, isLoading } = useQuery<GithubUserProps, Error>(['userDetails'], () => getUserDetails({q}));
+
+    return {
+        data,
+        isLoading
+    }
+
 }
