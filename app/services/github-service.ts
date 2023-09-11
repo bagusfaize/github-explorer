@@ -21,3 +21,13 @@ export const searchUsers = async ({ q, page, per_page }: QueryParamsProps) => {
     }
 
 }
+
+export const getUserDetails = async ({ q: username }: QueryParamsProps) => {
+    try {
+        const response = await client.get(`/users/${username}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+}
