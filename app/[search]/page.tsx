@@ -9,17 +9,17 @@ import Accordion from '../components/accordion';
 import RepoCard from '../components/repo-card';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
+import RepoSkeleton from '../components/skeleton/repo-skeleton';
 
 export default function SearchPage() {
     const searchParams = useSearchParams();
     const username = searchParams.get("username");
     const router = useRouter()
     const { expanded, setExpanded } = useAccordion();
-    const { repos, setSelectedUser } = useUserRepo();
-
+    const { repos, setSelectedUser, isRefetching } = useUserRepo();
 
     const {
-        data,
+        users,
         redirectToSearchPage,
         searchQuery,
         setSearchQuery
@@ -38,7 +38,7 @@ export default function SearchPage() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center mx-10">
+        <div className="flex flex-col items-center justify-center">
             <div className="my-5 w-full md:w-2/3">
                 <Link href="/">
                     <h1 className="text-3xl text-center">GitHub Explorer</h1>
@@ -50,16 +50,17 @@ export default function SearchPage() {
                 />
             </div>
             <div className="grid grid-cols-1 gap-5 w-full md:w-2/3">
-                {data.map((user, i) => (
+                {users.map((data, i) => (
                     <Accordion
                         i={i}
-                        key={user.id}
-                        user={user}
+                        key={data.id}
+                        user={data}
                         isOpen={i === expanded}
-                        setExpanded={(value) => handleOpenAccordion(value, user.login)}
+                        setExpanded={(value) => handleOpenAccordion(value, data.login)}
                     >
-                        <div className="grid grid-cols-6 pt-4 gap-4">
-                            {repos.map(repo => {
+                        <div className="grid grid-cols-12 pt-4 gap-4">
+                            {isRefetching && <LoadingSkeleton />}
+                            {!isRefetching && repos.map(repo => {
                                 return (
                                     <RepoCard
                                         key={repo.id}
@@ -75,5 +76,17 @@ export default function SearchPage() {
                 ))}
             </div>
         </div>
+    )
+}
+
+function LoadingSkeleton() {
+    return (
+        <>
+            {
+                [...Array(6)].map(() => {
+                    return <RepoSkeleton />
+                })
+            }
+        </>
     )
 }
