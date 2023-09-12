@@ -4,7 +4,7 @@ import { InputSearchProps } from "../types/types";
 export default function InputSearch({searchQuery, onSearch, onInputChange} : InputSearchProps) {
 
   return (
-    <div className="flex my-5">
+    <div className="flex my-5 w-full">
       <input 
         type="text" 
         className="py-3 px-5 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500" 

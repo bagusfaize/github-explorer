@@ -10,12 +10,14 @@ export default function RepoCard({
     stargazers_count
 }: RepoCardProps) {
     return (
-        <div className="bg-white p-4 flex flex-col rounded-md shadow-sm col-span-6 md:col-span-3 lg:col-span-2">
-            <div className="flex items-center mb-2">
-                <span className="mr-1"><BiSolidBookBookmark /></span>
-                <span className="text-sm break-all font-medium">{name}</span>
+        <div className="bg-white p-4 flex flex-col justify-between rounded-md shadow-sm col-span-6 md:col-span-3 lg:col-span-2">
+            <div>
+                <div className="flex items-center mb-2">
+                    <span className="mr-1"><BiSolidBookBookmark /></span>
+                    <span className="text-sm break-all font-medium">{name}</span>
+                </div>
+                <div className="text-xs text-gray-500 mb-2 capitalize line-clamp-3" >{description || 'description not available'}</div>
             </div>
-            <div className="text-xs text-gray-500 mb-2 capitalize" >{description || 'description not available'}</div>
             <div className="flex items-center justify-between mt-3">
                 <div className="flex items-center justify-center">
                     <span className="mr-1"><BiSolidStar /></span>
