@@ -42,6 +42,6 @@ npm run dev
 ```
 
 ## Contact me
-##### Bagus Faizun <br/>
+### Bagus Faizun <br/>
 Email : [bagusfaizn@gmail.com](mailto:bagusfaizn@gmail.com) <br/>
 LinkedIn : [Bagus Faizun](https://www.linkedin.com/in/bagus-faizun-925610187/)
