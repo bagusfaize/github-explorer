@@ -14,12 +14,16 @@ export const useSearchUsers = ({
     const searchParams = useSearchParams();
     const username = searchParams.get("username") || '';
     const isQueryEmpty = searchQuery === "";
-    
+
     const redirectToSearchPage = () => {
         if (!isQueryEmpty) router.push(`/search?username=${searchQuery}`)
     }
-    
-    const { data = [], isLoading, refetch: refetchUsers } = useQuery<GithubUserProps[], Error>(['searchUsers'], () => searchUsers({ q: username, page, per_page }), { enabled: false });
+
+    const {
+        data: users = [],
+        isLoading,
+        refetch: refetchUsers
+    } = useQuery<GithubUserProps[], Error>(['searchUsers'], () => searchUsers({ q: username, page, per_page }), { enabled: false });
 
     useEffect(() => {
         if (username) {
@@ -29,7 +33,7 @@ export const useSearchUsers = ({
     }, [username])
 
     return {
-        data,
+        users,
         isLoading,
         isQueryEmpty,
         searchQuery,
@@ -41,10 +45,15 @@ export const useSearchUsers = ({
 
 export const useUserRepo = () => {
     const [selectedUser, setSelectedUser] = useState<string>('')
-    const { data: repos = [], isLoading, refetch: refetchRepos } = useQuery<RepoCardProps[], Error>(['userRepo'], () => getUserRepo({q: selectedUser}), { enabled: false });
-    
+    const {
+        data: repos = [],
+        isLoading,
+        refetch: refetchRepos,
+        isRefetching
+    } = useQuery<RepoCardProps[], Error>(['userRepo'], () => getUserRepo({ q: selectedUser }), { enabled: false });
+
     useEffect(() => {
-    if (selectedUser) refetchRepos()
+        if (selectedUser) refetchRepos()
     }, [selectedUser])
 
     return {
@@ -52,14 +61,15 @@ export const useUserRepo = () => {
         isLoading,
         refetchRepos,
         setSelectedUser,
+        isRefetching
     }
-} 
+}
 
 export const useUserDetails = ({
     q
-}: QueryParamsProps ) => {
+}: QueryParamsProps) => {
 
-    const { data, isLoading } = useQuery<GithubUserProps, Error>(['userDetails'], () => getUserDetails({q}));
+    const { data, isLoading } = useQuery<GithubUserProps, Error>(['userDetails'], () => getUserDetails({ q }));
 
     return {
         data,
