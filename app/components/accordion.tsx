@@ -14,7 +14,7 @@ type AccordionProps = {
 
 export default function Accordion({ i, setExpanded, user, children, isOpen }: AccordionProps) {
     return (
-        <div>
+        <div className="col-span-1">
             <header
                 onClick={() => setExpanded(isOpen ? false : i)}
             >
@@ -35,7 +35,6 @@ export default function Accordion({ i, setExpanded, user, children, isOpen }: Ac
                             },
                         }}
                         exit={{ opacity: 0 }}
-                    // className="p-2 text-lg text-gray-700 border-l border-b border-gray-300"
                     >
                         {children}
                     </motion.section>

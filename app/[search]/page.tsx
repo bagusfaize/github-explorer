@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import RepoSkeleton from '../components/skeleton/repo-skeleton';
 import ProfileSkeleton from '../components/skeleton/profile-skeleton';
 import Image from 'next/image';
+import Logo from '../components/logo';
 
 export default function SearchPage() {
     const searchParams = useSearchParams();
@@ -42,10 +43,10 @@ export default function SearchPage() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center px-4 sm:px-10 pb-10">
+        <div className="flex flex-col items-center px-4 sm:px-10 pb-10 min-h-screen">
             <div className="my-5 w-full md:w-2/3">
                 <Link href="/">
-                    <h1 className="text-3xl text-center">GitHub Explorer</h1>
+                    <Logo />
                 </Link>
                 <InputSearch
                     searchQuery={searchQuery}
@@ -54,7 +55,8 @@ export default function SearchPage() {
                 />
             </div>
             <div className="grid grid-cols-1 gap-5 w-full md:w-2/3">
-                {isUsersEmpty && <EmptyUserState/>}
+                <h1 className="font-semibold my-2">Showing result for <span className="italic">"{username}"</span></h1>
+                {isUsersEmpty && <EmptyUserState />}
                 {isLoadingUsers && <UserLoadingSkeleton />}
                 {!isLoadingUsers && users.map((data, i) => (
                     <Accordion
@@ -65,7 +67,7 @@ export default function SearchPage() {
                         setExpanded={(value) => handleOpenAccordion(value, data.login)}
                     >
                         <div className="grid grid-cols-12 pt-4 gap-4">
-                            {isReposEmpty && <EmptyRepoState/>}
+                            {isReposEmpty && <EmptyRepoState />}
                             {isLoadingRepos && <RepoLoadingSkeleton />}
                             {!isLoadingRepos && repos.map(repo => {
                                 return (
@@ -88,18 +90,18 @@ export default function SearchPage() {
 
 function RepoLoadingSkeleton() {
     return (
-        [...Array(6)].map((v,i) => (<RepoSkeleton key={`reposkeleton-${i}`}/>))
+        [...Array(6)].map((v, i) => (<RepoSkeleton key={`reposkeleton-${i}`} />))
     )
 }
 
 function UserLoadingSkeleton() {
     return (
-        [...Array(6)].map((v,i) => (<ProfileSkeleton key={`profileskeleton-${i}`} />))
+        [...Array(6)].map((v, i) => (<ProfileSkeleton key={`profileskeleton-${i}`} />))
     )
 }
 
 function EmptyUserState() {
-    return(
+    return (
         <div className="flex flex-col items-center justify-center text-gray-500 text-sm py-20">
             <Image src="empty-user.svg" alt="not-found" width="150" height="150" />
             <span className="my-5">Oops! User not found.</span>
@@ -108,7 +110,7 @@ function EmptyUserState() {
 }
 
 function EmptyRepoState() {
-    return(
+    return (
         <div className="flex flex-col items-center justify-center text-gray-500 text-sm py-20 col-span-12">
             <Image src="empty-repo.svg" alt="not-found" width="100" height="100" />
             <span className="my-5">Oops! Repo not found.</span>
