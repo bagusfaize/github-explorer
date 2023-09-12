@@ -8,7 +8,6 @@ import { useAccordion } from '../hooks/use-accordion';
 import Accordion from '../components/accordion';
 import RepoCard from '../components/repo-card';
 import Link from 'next/link';
-import { useRouter } from "next/navigation";
 import RepoSkeleton from '../components/skeleton/repo-skeleton';
 import ProfileSkeleton from '../components/skeleton/profile-skeleton';
 import Image from 'next/image';
@@ -17,7 +16,6 @@ import Logo from '../components/logo';
 export default function SearchPage() {
     const searchParams = useSearchParams();
     const username = searchParams.get("username");
-    const router = useRouter()
     const { expanded, setExpanded } = useAccordion();
     const { repos, setSelectedUser, isReposEmpty, isLoadingRepos } = useUserRepo();
 

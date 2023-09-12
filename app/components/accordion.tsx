@@ -1,7 +1,6 @@
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GithubUserProps } from '../types/types';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import ProfileCard from './profile-card';
 
 type AccordionProps = {

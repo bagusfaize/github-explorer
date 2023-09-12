@@ -34,13 +34,3 @@ export const getUserRepo = async ({ q: username }: QueryParamsProps) => {
         console.error('Error:', error);
     }
 }
-
-export const getUserDetails = async ({ q: username }: QueryParamsProps) => {
-    try {
-        const response = await client.get(`/users/${username}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error:', error);
-    }
-
-}

@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query"
-import { getUserDetails, getUserRepo, searchUsers } from "../services/github-service"
+import { getUserRepo, searchUsers } from "../services/github-service"
 import { GithubUserProps, QueryParamsProps, RepoCardProps } from "../types/types";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -66,8 +66,6 @@ export const useUserRepo = () => {
 
     const isReposEmpty = !isLoadingRepos && !repos.length;
 
-    console.log('clg repos', isLoading, repos);
-
     return {
         repos,
         isLoadingRepos,
@@ -75,17 +73,4 @@ export const useUserRepo = () => {
         refetchRepos,
         setSelectedUser,
     }
-}
-
-export const useUserDetails = ({
-    q
-}: QueryParamsProps) => {
-
-    const { data, isLoading } = useQuery<GithubUserProps, Error>(['userDetails'], () => getUserDetails({ q }));
-
-    return {
-        data,
-        isLoading
-    }
-
 }
