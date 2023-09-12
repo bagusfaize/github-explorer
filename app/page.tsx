@@ -21,7 +21,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen mx-10">
+    <main className="min-h-screen">
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-3xl text-center">GitHub Explorer</h1>
         <div className="w-full md:w-1/2">
