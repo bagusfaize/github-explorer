@@ -3,21 +3,39 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query"
 import { getUserDetails, getUserRepo, searchUsers } from "../services/github-service"
 import { GithubUserProps, QueryParamsProps, RepoCardProps } from "../types/types";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export const useSearchUsers = ({
     page,
     per_page
 }: QueryParamsProps) => {
-    const [searchQuery, setSearchQuery] = useState<string>('')
+    const router = useRouter()
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    const searchParams = useSearchParams();
+    const username = searchParams.get("username") || '';
+    const isQueryEmpty = searchQuery === "";
+    
+    const redirectToSearchPage = () => {
+        if (!isQueryEmpty) router.push(`/search?username=${searchQuery}`)
+    }
+    
+    const { data = [], isLoading, refetch: refetchUsers } = useQuery<GithubUserProps[], Error>(['searchUsers'], () => searchUsers({ q: username, page, per_page }), { enabled: false });
 
-    const { data = [], isLoading, refetch } = useQuery<GithubUserProps[], Error>(['searchUsers'], () => searchUsers({ q: searchQuery, page, per_page }), { enabled: false });
+    useEffect(() => {
+        if (username) {
+            setSearchQuery(username)
+            refetchUsers()
+        }
+    }, [username])
 
     return {
         data,
         isLoading,
+        isQueryEmpty,
         searchQuery,
         setSearchQuery,
-        refetch
+        refetchUsers,
+        redirectToSearchPage
     }
 }
 
