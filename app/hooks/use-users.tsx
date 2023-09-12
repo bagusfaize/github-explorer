@@ -22,8 +22,13 @@ export const useSearchUsers = ({
     const {
         data: users = [],
         isLoading,
+        isRefetching,
         refetch: refetchUsers
     } = useQuery<GithubUserProps[], Error>(['searchUsers'], () => searchUsers({ q: username, page, per_page }), { enabled: false });
+
+    const isLoadingUsers = isLoading || isRefetching;
+
+    const isUsersEmpty = !isLoadingUsers && !users.length;
 
     useEffect(() => {
         if (username) {
@@ -34,9 +39,10 @@ export const useSearchUsers = ({
 
     return {
         users,
-        isLoading,
         isQueryEmpty,
         searchQuery,
+        isLoadingUsers,
+        isUsersEmpty,
         setSearchQuery,
         refetchUsers,
         redirectToSearchPage
@@ -56,12 +62,18 @@ export const useUserRepo = () => {
         if (selectedUser) refetchRepos()
     }, [selectedUser])
 
+    const isLoadingRepos = isLoading || isRefetching;
+
+    const isReposEmpty = !isLoadingRepos && !repos.length;
+
+    console.log('clg repos', isLoading, repos);
+
     return {
         repos,
-        isLoading,
+        isLoadingRepos,
+        isReposEmpty,
         refetchRepos,
         setSelectedUser,
-        isRefetching
     }
 }
 

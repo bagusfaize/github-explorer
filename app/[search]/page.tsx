@@ -10,22 +10,26 @@ import RepoCard from '../components/repo-card';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import RepoSkeleton from '../components/skeleton/repo-skeleton';
+import ProfileSkeleton from '../components/skeleton/profile-skeleton';
+import Image from 'next/image';
 
 export default function SearchPage() {
     const searchParams = useSearchParams();
     const username = searchParams.get("username");
     const router = useRouter()
     const { expanded, setExpanded } = useAccordion();
-    const { repos, setSelectedUser, isRefetching, isLoading } = useUserRepo();
+    const { repos, setSelectedUser, isReposEmpty, isLoadingRepos } = useUserRepo();
 
     const {
         users,
-        redirectToSearchPage,
         searchQuery,
-        setSearchQuery
+        isLoadingUsers,
+        isUsersEmpty,
+        setSearchQuery,
+        redirectToSearchPage,
     } = useSearchUsers({
         page: 1,
-        per_page: 6
+        per_page: 5
     });
 
     const handleSearch = () => {
@@ -38,7 +42,7 @@ export default function SearchPage() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center px-4 sm:px-10 pb-10">
             <div className="my-5 w-full md:w-2/3">
                 <Link href="/">
                     <h1 className="text-3xl text-center">GitHub Explorer</h1>
@@ -50,7 +54,9 @@ export default function SearchPage() {
                 />
             </div>
             <div className="grid grid-cols-1 gap-5 w-full md:w-2/3">
-                {users.map((data, i) => (
+                {isUsersEmpty && <EmptyUserState/>}
+                {isLoadingUsers && <UserLoadingSkeleton />}
+                {!isLoadingUsers && users.map((data, i) => (
                     <Accordion
                         i={i}
                         key={data.id}
@@ -59,8 +65,9 @@ export default function SearchPage() {
                         setExpanded={(value) => handleOpenAccordion(value, data.login)}
                     >
                         <div className="grid grid-cols-12 pt-4 gap-4">
-                            {(isLoading || isRefetching) && <LoadingSkeleton />}
-                            {!isRefetching && repos.map(repo => {
+                            {isReposEmpty && <EmptyRepoState/>}
+                            {isLoadingRepos && <RepoLoadingSkeleton />}
+                            {!isLoadingRepos && repos.map(repo => {
                                 return (
                                     <RepoCard
                                         key={repo.id}
@@ -79,8 +86,32 @@ export default function SearchPage() {
     )
 }
 
-function LoadingSkeleton() {
+function RepoLoadingSkeleton() {
     return (
-        [...Array(6)].map(() => (<RepoSkeleton />))
+        [...Array(6)].map((v,i) => (<RepoSkeleton key={`reposkeleton-${i}`}/>))
+    )
+}
+
+function UserLoadingSkeleton() {
+    return (
+        [...Array(6)].map((v,i) => (<ProfileSkeleton key={`profileskeleton-${i}`} />))
+    )
+}
+
+function EmptyUserState() {
+    return(
+        <div className="flex flex-col items-center justify-center text-gray-500 text-sm py-20">
+            <Image src="empty-user.svg" alt="not-found" width="150" height="150" />
+            <span className="my-5">Oops! User not found.</span>
+        </div>
+    )
+}
+
+function EmptyRepoState() {
+    return(
+        <div className="flex flex-col items-center justify-center text-gray-500 text-sm py-20 col-span-12">
+            <Image src="empty-repo.svg" alt="not-found" width="100" height="100" />
+            <span className="my-5">Oops! Repo not found.</span>
+        </div>
     )
 }
