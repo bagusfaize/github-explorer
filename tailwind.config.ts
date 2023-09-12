@@ -7,7 +7,12 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "sunflower": "#F9A826",
+        "sunflower-darker" : "#d19432"
+      }
+    },
   },
   plugins: [],
 }

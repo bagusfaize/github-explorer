@@ -1,33 +1,45 @@
 "use client"
 
-import ProfileCard from "./components/profile-card";
-import { useUsers } from "./hooks/use-users"
+import InputSearch from "./components/input-search";
+import { useSearchUsers } from "./hooks/use-users";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import Logo from "./components/logo";
 
 export default function Home() {
 
-  const {data = [], isLoading} = useUsers();
+  const {
+    searchQuery,
+    setSearchQuery,
+    redirectToSearchPage,
+  } = useSearchUsers({
+    page: 1,
+    per_page: 6
+  });
 
-  if (isLoading) {
-    return <div>Loading...</div>
+  const handleSearch = () => {
+    redirectToSearchPage()
   }
 
   return (
-    <main className="min-h-screen mx-10">
-      <div className="flex flex-col items-center justify-center">
-        <div className="my-5">
-          <h1 className="text-3xl text-center">GitHub Explorer</h1>
-          <input type="text" className="border border-sky-800 px-3 py-1" />
-          <button className="bg-sky-800	text-white px-3 py-1 mx-3">Search</button>
+    <main className="flex flex-col items-center justify-center px-10 sm:px-16 h-[calc(100vh-32px)]">
+      <div className="grid grid-cols-12 sm:gap-5 w-full lg:w-3/5">
+        <div className="col-span-12 sm:col-span-4 justify-start">
+          <Image className="h-20 w-20 sm:h-52 sm:w-52" src="home-state.svg" alt="home-illustration" width="300" height="300" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 w-full md:w-auto">
-          {data.map(user => (
-            <ProfileCard
-              key={user.id}
-              id={user.id}
-              login={user.login}
-              avatar_url={user.avatar_url}
+        <div className="col-span-12 sm:col-span-8">
+          <Logo />
+          <h1 className="text-2xl sm:text-3xl mb-11 sm:mb-7 font-medium">
+            Explore Github Users and Repositories
+          </h1>
+          <div className="w-full">
+            <InputSearch
+              searchQuery={searchQuery}
+              onInputChange={(value) => setSearchQuery(value)}
+              onSearch={handleSearch}
             />
-          ))}
+          </div>
         </div>
       </div>
     </main>
