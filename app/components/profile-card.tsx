@@ -1,14 +1,32 @@
 import Image from "next/image";
 import { GithubUserProps } from "../types/types";
-import { FaGithub } from 'react-icons/fa'
+import { FaChevronDown, FaChevronUp, FaGithub } from 'react-icons/fa'
 import Link from "next/link";
 
 type ProfileCardProps = {
   user: GithubUserProps,
-  label: string
+  isOpen: boolean
 }
 
-export default function ProfileCard({ user, label }: ProfileCardProps) {
+export default function ProfileCard({ user, isOpen }: ProfileCardProps) {
+  const generateToggleLabel = () => {
+    return(
+        <>
+            {isOpen ? 
+                <>
+                  <FaChevronUp className="sm:hidden"/>
+                  <div className="hidden sm:block">Hide Repos</div>
+                </>
+                :
+                <>
+                  <FaChevronDown className="sm:hidden"/>
+                  <div className="hidden sm:block">See Repos</div>
+                </>
+            }
+        </>
+    )
+}
+
   return (
     <div className="bg-white p-5 flex justify-between rounded-md shadow-sm cursor-pointer">
       <div className="flex">
@@ -31,12 +49,9 @@ export default function ProfileCard({ user, label }: ProfileCardProps) {
           </div>
         </div>
       </div>
-      <button
-        type="button"
-        className="w-28 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-black text-white hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 text-xs"
-      >
-        {label}
-      </button>
+      <div className="w-12 sm:w-28 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-black text-white hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 text-xs">
+        {generateToggleLabel()}
+      </div>
     </div>
   )
 }

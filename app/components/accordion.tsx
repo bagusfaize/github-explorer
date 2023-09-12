@@ -1,7 +1,8 @@
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import ProfileCard from './profile-card';
 import { GithubUserProps } from '../types/types';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import ProfileCard from './profile-card';
 
 type AccordionProps = {
     isOpen: boolean,
@@ -19,7 +20,7 @@ export default function Accordion({ i, setExpanded, user, children, isOpen }: Ac
             >
                 <ProfileCard
                     user={user}
-                    label={isOpen ? "Hide Repos" : "See Repos"}
+                    isOpen={isOpen}
                 />
             </header>
             <AnimatePresence>
