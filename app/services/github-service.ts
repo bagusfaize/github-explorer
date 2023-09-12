@@ -12,19 +12,23 @@ const client = axios.create({
 
 export const searchUsers = async ({ q, page, per_page }: QueryParamsProps) => {
     try {
-        const response = await client.get("search/users", {
-            params: { q, page, per_page }
-        });
+        //stimulate delay to show loading skeleton little bit longer 
+        await new Promise((resolve) => setTimeout(resolve, 750));
+        const response = await client.get("search/users", {params: { q, page, per_page }});
+
         return response.data.items;
+
     } catch (error) {
         console.error('Error:', error);
     }
-
 }
 
 export const getUserRepo = async ({ q: username }: QueryParamsProps) => {
     try {
+        //stimulate delay to show loading skeleton little bit longer 
+        await new Promise((resolve) => setTimeout(resolve, 750));
         const response = await client.get(`/users/${username}/repos`);
+
         return response.data;
     } catch (error) {
         console.error('Error:', error);
