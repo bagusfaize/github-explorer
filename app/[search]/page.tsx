@@ -16,7 +16,7 @@ export default function SearchPage() {
     const username = searchParams.get("username");
     const router = useRouter()
     const { expanded, setExpanded } = useAccordion();
-    const { repos, setSelectedUser, isRefetching } = useUserRepo();
+    const { repos, setSelectedUser, isRefetching, isLoading } = useUserRepo();
 
     const {
         users,
@@ -59,7 +59,7 @@ export default function SearchPage() {
                         setExpanded={(value) => handleOpenAccordion(value, data.login)}
                     >
                         <div className="grid grid-cols-12 pt-4 gap-4">
-                            {isRefetching && <LoadingSkeleton />}
+                            {(isLoading || isRefetching) && <LoadingSkeleton />}
                             {!isRefetching && repos.map(repo => {
                                 return (
                                     <RepoCard
@@ -81,12 +81,6 @@ export default function SearchPage() {
 
 function LoadingSkeleton() {
     return (
-        <>
-            {
-                [...Array(6)].map(() => {
-                    return <RepoSkeleton />
-                })
-            }
-        </>
+        [...Array(6)].map(() => (<RepoSkeleton />))
     )
 }
